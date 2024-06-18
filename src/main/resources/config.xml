@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="executor" class="Executor">
+        <property name="taskList">
+            <list value-type="java.util.List">
+                <ref bean="task1"/>
+                <ref bean="task2"/>
+                <ref bean="task3"/>
+            </list>
+        </property>
+    </bean>
+    <bean id="task1" class="Task">
+        <property name="taskContent" value="task1"/>
+    </bean>
+    <bean id="task2" class="Task">
+        <property name="taskContent" value="task2"/>
+        <property name="subtaskContent" ref="subtask1"/>
+    </bean>
+    <bean id="task3" class="Task">
+        <property name="taskContent" value="task3"/>
+        <property name="subtaskContent" ref="subtask2"/>
+    </bean>
+    <bean id="subtask1" class="Task">
+        <property name="taskContent" value="subTask1"/>
+    </bean>
+    <bean id="subtask2" class="Task">
+        <property name="taskContent" value="subTask2"/>
+    </bean>
+
+</beans>
