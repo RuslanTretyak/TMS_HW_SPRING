@@ -49,7 +49,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public ModelAndView CreateUser(@ModelAttribute User user, Model model) {
+    public ModelAndView createUser(@ModelAttribute User user, Model model) {
         if (!user.getLogin().isEmpty() && !user.getName().isEmpty() && !user.getSurname().isEmpty()) {
             try {
                 UserService.createUser(user);
@@ -59,7 +59,8 @@ public class UserController {
                 throw new RuntimeException(e);
             }
         }
-        return new ModelAndView("create_user", "user", new User());
+        model.addAttribute("message", "not all data was entered!");
+        return new ModelAndView("create_user", "user", new User()).addObject(model);
     }
 
     @RequestMapping(value = "/delete")
@@ -81,12 +82,12 @@ public class UserController {
         }
     }
     @RequestMapping(value = "/change")
-    public ModelAndView showChangeUserForm() {
+    public ModelAndView showChangeLoginForm() {
         return new ModelAndView("change_login", "user", new User());
     }
 
     @RequestMapping(value = "/change", method = RequestMethod.POST)
-    public ModelAndView changeUser(@ModelAttribute User user, Model model) {
+    public ModelAndView changeLogin(@ModelAttribute User user, Model model) {
         if (!user.getLogin().isEmpty()) {
             try {
                 if (UserService.changeUserLogin(user)) {
@@ -99,7 +100,8 @@ public class UserController {
                 throw new RuntimeException(e);
             }
         } else {
-            return new ModelAndView("change_login", "user", new User());
+            model.addAttribute("message", "not all data was entered!");
+            return new ModelAndView("change_login", "user", new User()).addObject(model);
         }
     }
 

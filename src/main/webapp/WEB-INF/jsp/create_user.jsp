@@ -6,7 +6,7 @@
     <title>Create User</title>
 </head>
 <body>
-<h4 modelAttribute="model">${message}</h4>
+<h4>${message}</h4>
 <form:form action="create" method="post" modelAttribute="user">
   <div>
     <form:label path="login"><h3>Enter login:</h3></form:label>
