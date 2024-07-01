@@ -15,11 +15,6 @@ import java.sql.SQLException;
 @Controller
 @RequestMapping("/user")
 public class UserController {
-    @RequestMapping()
-    public String ChangeLogin(Model model) {
-        model.addAttribute("message", "hello");
-        return "change_login";
-    }
 
     @RequestMapping("/get")
     public String getUserInfo(@RequestParam int id, Model model) {
