@@ -16,7 +16,7 @@ import java.sql.SQLException;
 @RequestMapping("/user")
 public class UserController {
 
-    @RequestMapping("/get")
+    @RequestMapping("/get-user")
     public String getUserInfo(@RequestParam int id, Model model) {
         User user = null;
         try {
