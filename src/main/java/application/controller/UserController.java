@@ -1,6 +1,8 @@
-package controller;
+package application.controller;
 
-import entity.User;
+import application.entity.User;
+import application.util.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -8,19 +10,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-import util.UserService;
 
 import java.sql.SQLException;
 
 @Controller
 @RequestMapping("/user")
 public class UserController {
+    @Autowired
+    private UserService userService;
 
     @RequestMapping("/get-user")
     public String getUserInfo(@RequestParam int id, Model model) {
         User user = null;
         try {
-            user = UserService.getUserInfo(id);
+            user = this.userService.getUserInfo(id);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -47,7 +50,7 @@ public class UserController {
     public ModelAndView createUser(@ModelAttribute User user, Model model) {
         if (!user.getLogin().isEmpty() && !user.getName().isEmpty() && !user.getSurname().isEmpty()) {
             try {
-                UserService.createUser(user);
+                this.userService.createUser(user);
                 model.addAttribute("message", "user " + user.getLogin() + " created successful");
                 return new ModelAndView("create_user_result", "model", model);
             } catch (SQLException e) {
@@ -59,23 +62,24 @@ public class UserController {
     }
 
     @RequestMapping(value = "/delete")
-    public ModelAndView showDeleteUserForm() {
-        return new ModelAndView("delete_user", "user", new User());
+    public String showDeleteUserForm() {
+        return "delete_user";
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
-    public ModelAndView deleteUser(@ModelAttribute User user, Model model) {
+    public ModelAndView deleteUser(@RequestParam int id, Model model) {
         try {
-            if (UserService.deleteUser(user.getId())) {
-                model.addAttribute("message", "user with ID " + user.getId() + " was deleted");
+            if (this.userService.deleteUser(id)) {
+                model.addAttribute("message", "user with ID " + id + " was deleted");
             } else {
-                model.addAttribute("message", "user with ID " + user.getId() + " does not exist");
+                model.addAttribute("message", "user with ID " + id + " does not exist");
             }
             return new ModelAndView("delete_user_result", "model", model);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
+
     @RequestMapping(value = "/change")
     public ModelAndView showChangeLoginForm() {
         return new ModelAndView("change_login", "user", new User());
@@ -85,7 +89,7 @@ public class UserController {
     public ModelAndView changeLogin(@ModelAttribute User user, Model model) {
         if (!user.getLogin().isEmpty()) {
             try {
-                if (UserService.changeUserLogin(user)) {
+                if (this.userService.changeUserLogin(user)) {
                     model.addAttribute("message", "new login applied");
                 } else {
                     model.addAttribute("message", "user with ID " + user.getId() + " does not exist");

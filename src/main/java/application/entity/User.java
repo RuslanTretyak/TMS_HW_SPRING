@@ -1,4 +1,4 @@
-package entity;
+package application.entity;
 
 public class User {
     private String login;

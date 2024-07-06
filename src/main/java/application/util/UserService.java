@@ -1,14 +1,18 @@
-package util;
+package application.util;
 
-import entity.User;
+import application.entity.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.sql.*;
-import java.util.HashMap;
-import java.util.Map;
 
+@Component
 public class UserService {
-    public static User getUserInfo(int id) throws SQLException {
-        Connection connection = PostgreDriverManager.getInstance().getConnection();
+    @Autowired
+    private PostgreDriverManager postgreDriverManager;
+
+    public User getUserInfo(int id) throws SQLException {
+        Connection connection = this.postgreDriverManager.getConnection();
         PreparedStatement statement = connection.prepareStatement("SELECT * FROM users where id = ?");
         statement.setInt(1, id);
         ResultSet resultSet = statement.executeQuery();
@@ -24,23 +28,23 @@ public class UserService {
         }
     }
 
-    public static boolean changeUserLogin(User user) throws SQLException {
-        Connection connection = PostgreDriverManager.getInstance().getConnection();
+    public boolean changeUserLogin(User user) throws SQLException {
+        Connection connection = this.postgreDriverManager.getConnection();
         PreparedStatement statement = connection.prepareStatement("update users set login=? where id=?;");
         statement.setInt(2, user.getId());
         statement.setString(1, user.getLogin());
         return statement.executeUpdate() > 0;
     }
 
-    public static boolean deleteUser(int id) throws SQLException {
-        Connection connection = PostgreDriverManager.getInstance().getConnection();
+    public boolean deleteUser(int id) throws SQLException {
+        Connection connection = this.postgreDriverManager.getConnection();
         PreparedStatement statement = connection.prepareStatement("delete from users where id=?;");
         statement.setInt(1, id);
         return statement.executeUpdate() > 0;
     }
 
-    public static boolean createUser(User user) throws SQLException {
-        Connection connection = PostgreDriverManager.getInstance().getConnection();
+    public boolean createUser(User user) throws SQLException {
+        Connection connection = this.postgreDriverManager.getConnection();
         PreparedStatement statement = connection.prepareStatement("insert into users (login, name, surname, age) values (?, ?, ?, ?);");
         statement.setString(1, user.getLogin());
         statement.setString(2, user.getName());
