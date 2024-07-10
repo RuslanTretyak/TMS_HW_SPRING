@@ -1,0 +1,15 @@
+package application.validator;
+
+import application.DAO.StudentDAO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Component
+public class Validator {
+    @Autowired
+    private StudentDAO studentDAO;
+
+    public boolean isIdValid(int id) {
+        return this.studentDAO.getStudent(id) != null;
+    }
+}

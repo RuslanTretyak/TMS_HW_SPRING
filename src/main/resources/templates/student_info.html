@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${student.name} + ' ' + ${student.surname}">Title</title>
+</head>
+<body>
+  <div th:object="${student}">
+    <h3 th:text="'name: ' + *{name}">name: </h3>
+    <h3 th:text="'surname: ' + *{surname}">name: </h3>
+    <h3 th:text="'group: ' + *{group}">name: </h3>
+    <h3 th:text="'age: ' + *{age}">name: </h3>
+    <h3 th:text="'id: ' + *{id}">name: </h3>
+  </div>
+  <div>
+      <a href="/student">Back</a>
+  </div>
+</body>
+</html>
