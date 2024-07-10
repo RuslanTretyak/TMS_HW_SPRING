@@ -2,9 +2,11 @@ package application.controller;
 
 import application.entity.User;
 import application.util.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -47,15 +49,11 @@ public class UserController {
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public ModelAndView createUser(@ModelAttribute User user, Model model) {
-        if (!user.getLogin().isEmpty() && !user.getName().isEmpty() && !user.getSurname().isEmpty()) {
-            try {
-                this.userService.createUser(user);
-                model.addAttribute("message", "user " + user.getLogin() + " created successful");
-                return new ModelAndView("create_user_result", "model", model);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
+    public ModelAndView createUser(@Valid @ModelAttribute User user, BindingResult bindingResult, Model model) {
+        if (!bindingResult.hasErrors()) {
+            this.userService.createUser(user);
+            model.addAttribute("message", "user " + user.getLogin() + " created successful");
+            return new ModelAndView("create_user_result", "model", model);
         }
         model.addAttribute("message", "not all data was entered!");
         return new ModelAndView("create_user", "user", new User()).addObject(model);
@@ -68,16 +66,12 @@ public class UserController {
 
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public ModelAndView deleteUser(@RequestParam int id, Model model) {
-        try {
-            if (this.userService.deleteUser(id)) {
-                model.addAttribute("message", "user with ID " + id + " was deleted");
-            } else {
-                model.addAttribute("message", "user with ID " + id + " does not exist");
-            }
-            return new ModelAndView("delete_user_result", "model", model);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        if (this.userService.deleteUser(id)) {
+            model.addAttribute("message", "user with ID " + id + " was deleted");
+        } else {
+            model.addAttribute("message", "user with ID " + id + " does not exist");
         }
+        return new ModelAndView("delete_user_result", "model", model);
     }
 
     @RequestMapping(value = "/change")
@@ -88,16 +82,12 @@ public class UserController {
     @RequestMapping(value = "/change", method = RequestMethod.POST)
     public ModelAndView changeLogin(@ModelAttribute User user, Model model) {
         if (!user.getLogin().isEmpty()) {
-            try {
-                if (this.userService.changeUserLogin(user)) {
-                    model.addAttribute("message", "new login applied");
-                } else {
-                    model.addAttribute("message", "user with ID " + user.getId() + " does not exist");
-                }
-                return new ModelAndView("change_login_result", "model", model);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
+            if (this.userService.changeUserLogin(user)) {
+                model.addAttribute("message", "new login applied");
+            } else {
+                model.addAttribute("message", "user with ID " + user.getId() + " does not exist");
             }
+            return new ModelAndView("change_login_result", "model", model);
         } else {
             model.addAttribute("message", "not all data was entered!");
             return new ModelAndView("change_login", "user", new User()).addObject(model);

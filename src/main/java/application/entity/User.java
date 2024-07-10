@@ -1,9 +1,16 @@
 package application.entity;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
+
 public class User {
+    @NotEmpty
     private String login;
+    @NotEmpty
     private String name;
+    @NotEmpty
     private String surname;
+    @Min(1)
     private int age;
     private int id;
 

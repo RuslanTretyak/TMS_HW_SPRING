@@ -10,7 +10,7 @@ import java.sql.SQLException;
 @Component
 public class PostgreDriverManager {
     @Value("${postgreDriverManager.url}")
-    private String URL;
+    private String url;
     @Value("${postgreDriverManager.userName}")
     private String USERNAME;
     @Value("${postgreDriverManager.password}")
@@ -29,7 +29,7 @@ public class PostgreDriverManager {
     }
 
     public Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(URL, USERNAME, PASSWORD);
+        return DriverManager.getConnection(url, USERNAME, PASSWORD);
     }
 
 }
