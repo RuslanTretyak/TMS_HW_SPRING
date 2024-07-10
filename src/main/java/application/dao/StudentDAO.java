@@ -1,4 +1,4 @@
-package application.DAO;
+package application.dao;
 
 import application.model.Student;
 import application.repository.StudentsRepository;

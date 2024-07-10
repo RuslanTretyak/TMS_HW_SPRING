@@ -1,6 +1,6 @@
 package application.validator;
 
-import application.DAO.StudentDAO;
+import application.dao.StudentDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
