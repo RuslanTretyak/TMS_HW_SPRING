@@ -12,9 +12,9 @@ public class PostgreDriverManager {
     @Value("${postgreDriverManager.url}")
     private String url;
     @Value("${postgreDriverManager.userName}")
-    private String USERNAME;
+    private String username;
     @Value("${postgreDriverManager.password}")
-    private String PASSWORD;
+    private String password;
 
     public PostgreDriverManager() {
         init();
@@ -29,7 +29,7 @@ public class PostgreDriverManager {
     }
 
     public Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(url, USERNAME, PASSWORD);
+        return DriverManager.getConnection(url, username, password);
     }
 
 }
