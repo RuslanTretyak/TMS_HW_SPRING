@@ -24,12 +24,13 @@ public class StudentDAO {
             ResultSet resultSet = statement.executeQuery();
             List<Student> studentList = new ArrayList<>();
             while (resultSet.next()) {
-                String name = resultSet.getString(2);
-                String surname = resultSet.getString(3);
-                String group = resultSet.getString(4);
-                int age = resultSet.getInt(5);
-                int id = resultSet.getInt(1);
-                studentList.add(new Student(name, surname, group, age, id));
+                Student student = new Student();
+                student.setId(resultSet.getInt(1));
+                student.setName(resultSet.getString(2));
+                student.setSurname(resultSet.getString(3));
+                student.setGroup(resultSet.getString(4));
+                student.setAge(resultSet.getInt(5));
+                studentList.add(student);
             }
             return studentList;
         } catch (SQLException e) {
@@ -44,11 +45,12 @@ public class StudentDAO {
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                String name = resultSet.getString(2);
-                String surname = resultSet.getString(3);
-                String group = resultSet.getString(4);
-                int age = resultSet.getInt(5);
-                return new Student(name, surname, group, age, id);
+                Student student = new Student();
+                student.setName(resultSet.getString(2));
+                student.setSurname(resultSet.getString(3));
+                student.setGroup(resultSet.getString(4));
+                student.setAge(resultSet.getInt(5));
+                return student;
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

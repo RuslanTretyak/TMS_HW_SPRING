@@ -17,17 +17,6 @@ public class Student {
     private int age;
     private int id;
 
-    public Student() {
-    }
-
-    public Student(String name, String surname, String group, int age, int id) {
-        this.name = name;
-        this.surname = surname;
-        this.group = group;
-        this.age = age;
-        this.id = id;
-    }
-
     public void setId(int id) {
         this.id = id;
     }
@@ -67,4 +56,5 @@ public class Student {
     public int getId() {
         return id;
     }
+
 }
