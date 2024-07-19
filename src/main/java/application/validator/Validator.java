@@ -10,6 +10,6 @@ public class Validator {
     private StudentDAO studentDAO;
 
     public boolean isIdValid(int id) {
-        return this.studentDAO.getStudent(id) != null;
+        return studentDAO.getStudent(id) != null;
     }
 }

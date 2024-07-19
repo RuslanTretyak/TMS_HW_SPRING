@@ -18,17 +18,17 @@ public class StudentController {
     @Autowired
     private Validator validator;
 
-    @GetMapping()
+    @GetMapping
     public ModelAndView showStudents() {
         ModelAndView modelAndView = new ModelAndView("show_all_students");
-        modelAndView.addObject("students", this.studentDAO.getAllStudents());
+        modelAndView.addObject("students", studentDAO.getAllStudents());
         return modelAndView;
     }
 
     @GetMapping("/{id}")
     public ModelAndView getStudentInfo(@PathVariable int id) {
         ModelAndView modelAndView = new ModelAndView("student_info");
-        modelAndView.addObject("student", this.studentDAO.getStudent(id));
+        modelAndView.addObject("student", studentDAO.getStudent(id));
         return modelAndView;
     }
 
@@ -55,8 +55,8 @@ public class StudentController {
 
     @PostMapping("/delete")
     public ModelAndView deleteStudent(@RequestParam int id) {
-        if (this.validator.isIdValid(id)) {
-            this.studentDAO.deleteStudent(id);
+        if (validator.isIdValid(id)) {
+            studentDAO.deleteStudent(id);
             return new ModelAndView("deleted_successful").addObject("id", id);
         } else {
             return new ModelAndView("delete_student").addObject("message", "id " + id + " is not found");
