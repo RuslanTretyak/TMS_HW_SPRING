@@ -1,7 +1,6 @@
 package application.dao;
 
-import application.exception.CardNotFoundException;
-import application.exception.ClientNotFoundException;
+import application.exception.DataNotFoundException;
 import application.model.Card;
 import application.model.Client;
 import application.model.MoneyTransfer;
@@ -20,7 +19,7 @@ public class ApplicationDAO {
 
     public Client getClient(int id) {
         Client client = jdbcTemplate.query("SELECT * FROM client WHERE id=?", new BeanPropertyRowMapper<>(Client.class), id)
-                .stream().findAny().orElseThrow(() -> new ClientNotFoundException("client with id " + id + " was not found"));
+                .stream().findAny().orElseThrow(() -> new DataNotFoundException("client with id " + id + " was not found"));
         client.setCards(getCardsByClient(id));
         return client;
     }
@@ -31,7 +30,7 @@ public class ApplicationDAO {
 
     public Card getCardById(int id) {
         Card card = jdbcTemplate.query("SELECT * FROM cards WHERE clientId=?", new BeanPropertyRowMapper<>(Card.class), id)
-                .stream().findAny().orElseThrow(() -> new CardNotFoundException("card was not found"));
+                .stream().findAny().orElseThrow(() -> new DataNotFoundException("card was not found"));
         String cardHolder = getClient(card.getClientId()).getName() + " " + getClient(card.getClientId()).getSurname();
         card.setCardHolder(cardHolder);
         return card;
@@ -39,16 +38,14 @@ public class ApplicationDAO {
 
     public Card getCardByNumber(long cardNumber) {
         return jdbcTemplate.query("SELECT * FROM cards WHERE cardNUmber=?", new BeanPropertyRowMapper<>(Card.class), cardNumber)
-                .stream().findAny().orElseThrow(() -> new CardNotFoundException("card was not found"));
+                .stream().findAny().orElseThrow(() -> new DataNotFoundException("card was not found"));
     }
 
     @Transactional
     public void doTransfer(MoneyTransfer transfer) {
-        Card senderCard = getCardByNumber(transfer.getSenderCardNumber());
-        senderCard.setAmount(senderCard.getAmount() - transfer.getTransferAmount());
-        Card receiverCard = getCardByNumber(transfer.getReceiverCardNumber());
-        receiverCard.setAmount(receiverCard.getAmount() + transfer.getTransferAmount());
-        jdbcTemplate.update("update cards set amount=? where cardNumber=?", senderCard.getAmount(), senderCard.getCardNumber());
-        jdbcTemplate.update("update cards set amount=? where cardNumber=?", receiverCard.getAmount(), receiverCard.getCardNumber());
+        double senderCardAmount = getCardByNumber(transfer.getSenderCardNumber()).getAmount();
+        double receiverCardAmount = getCardByNumber(transfer.getReceiverCardNumber()).getAmount();
+        jdbcTemplate.update("update cards set amount=? where cardNumber=?", senderCardAmount - transfer.getTransferAmount(), transfer.getSenderCardNumber());
+        jdbcTemplate.update("update cards set amount=? where cardNumber=?", receiverCardAmount + transfer.getTransferAmount(), transfer.getReceiverCardNumber());
     }
 }

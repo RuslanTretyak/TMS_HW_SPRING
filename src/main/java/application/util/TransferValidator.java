@@ -1,7 +1,7 @@
 package application.util;
 
 import application.dao.ApplicationDAO;
-import application.exception.CardNotFoundException;
+import application.exception.DataNotFoundException;
 import application.exception.TransferNotValidException;
 import application.model.Card;
 import application.model.MoneyTransfer;
@@ -20,7 +20,7 @@ public class TransferValidator {
         Card senderCard;
         try {
             senderCard = applicationDAO.getCardByNumber(transfer.getSenderCardNumber());
-        } catch (CardNotFoundException e) {
+        } catch (DataNotFoundException e) {
             throw new TransferNotValidException("Sender card not exist");
         }
         if (senderCard.getAmount() < transfer.getTransferAmount()) {
@@ -28,7 +28,7 @@ public class TransferValidator {
         }
         try {
             applicationDAO.getCardByNumber(transfer.getReceiverCardNumber());
-        } catch (CardNotFoundException e) {
+        } catch (DataNotFoundException e) {
             throw new TransferNotValidException("Sender card not exist");
         }
     }

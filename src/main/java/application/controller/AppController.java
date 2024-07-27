@@ -1,8 +1,7 @@
 package application.controller;
 
 import application.dao.ApplicationDAO;
-import application.exception.CardNotFoundException;
-import application.exception.ClientNotFoundException;
+import application.exception.DataNotFoundException;
 import application.exception.ExceptionResponse;
 import application.exception.TransferNotValidException;
 import application.model.Card;
@@ -39,12 +38,7 @@ public class AppController {
     }
 
     @ExceptionHandler
-    private ResponseEntity<ExceptionResponse> handleClientNotFoundException(ClientNotFoundException e) {
-        return new ResponseEntity<>(new ExceptionResponse(e.getMessage()), HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler
-    private ResponseEntity<ExceptionResponse> handleCardNotFoundException(CardNotFoundException e) {
+    private ResponseEntity<ExceptionResponse> handleCardNotFoundException(DataNotFoundException e) {
         return new ResponseEntity<>(new ExceptionResponse(e.getMessage()), HttpStatus.NOT_FOUND);
     }
 
