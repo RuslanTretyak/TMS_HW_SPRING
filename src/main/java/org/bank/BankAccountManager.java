@@ -19,7 +19,7 @@ public class BankAccountManager
             fromAccount.setCurrentBalance(fromAccount.getCurrentBalance() - convertedAmount);
             fromAccount.setDailyLimit(fromAccount.getDailyLimit() - amount);
 
-            toAccount.setDailyLimit(toAccount.getDailyLimit() - convertedAmount);
+            toAccount.setCurrentBalance(toAccount.getCurrentBalance() + convertedAmount);
         }
         else
         {
