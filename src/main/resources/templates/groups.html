@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>List of groups</title>
+</head>
+<body>
+    <div th:each="group : ${groups}">
+        <a th:text="${group.title}" th:href="@{'/group/' + ${group.title}}"></a>
+    </div>
+    <br>
+    <div>
+        <a href="/group/students_sorted/1">Отобразить список всех студентов по убыванию их успеваемости</a>
+    </div>
+    <br>
+    <div>
+        <a href="/group/top_3_students_from_each_group">Отобразить по 3 лучших (по успеваемости) студента из каждой группы</a>
+    </div>
+    <br>
+    <div>
+        <a href="/group/students_performance_lower_average">Отобразить всех студентов в каждой группе, у которых успеваемость меньше средней успеваемости в этой же группе</a>
+    </div>
+</body>
+</html>
