@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>List of groups</title>
+</head>
+<body>
+    <div th:each="group : ${groups}">
+        <form th:action="@{'/group/student/change_group/' + ${group.id}}" th:method="post">
+            <input type="submit" th:value="${group.title}"/>
+            <input type="hidden" th:name="student_id" th:value="${student_id}"/>
+        </form>
+    </div>
+</body>
+</html>
