@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Students</title>
+</head>
+<body>
+    <div>
+        <p th:text="${student.name} + ' ' + ${student.surname} + ', age=' + ${student.age} + ', is course paid: ' + ${student.isPaid}"></p>
+    </div>
+    <br>
+    <div>
+        <a href="/group">return</a>
+    </div>
+    <div>
+        <form th:action="@{'/group/student/delete/' + ${student.id}}" th:method="post">
+            <input type="submit" value="Delete"/>
+        </form>
+    </div>
+    <div>
+        <form th:action="@{'/group/student/change/' + ${student.id}}" th:method="get">
+            <input type="submit" value="Change"/>
+        </form>
+    </div>
+    <div>
+        <form th:action="@{'/group/student/change_group/' + ${student.id}}" th:method="get">
+            <input type="submit" value="Move"/>
+        </form>
+    </div>
+</body>
+</html>

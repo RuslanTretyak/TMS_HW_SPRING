@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>List of groups</title>
+</head>
+<body>
+    <div th:each="group : ${groups}">
+        <a th:text="${group.title}" th:href="@{'/group/' + ${group.id}}"></a>
+    </div>
+    <br>
+    <div>
+        <a href="/group/students/notpaid">Отобразить список студентов не оплативших курс</a>
+    </div>
+    <br>
+    <div>
+        <a href="/group/student/create">создать студента</a>
+    </div>
+    <br>
+    <div>
+        <a href="/group/students_performance_lower_average">Отобразить всех студентов в каждой группе, у которых успеваемость меньше средней успеваемости в этой же группе</a>
+    </div>
+</body>
+</html>
